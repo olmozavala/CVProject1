@@ -7,8 +7,8 @@ nbins = length(h);%Obtain the number of bins
 sumOverlap = 0;
 
 for i=1:nbins
-    minVal = min(h(i),h2(i));
-    sumOverlap = sumOverlap + minVal; %What percentage is being covered
+    minVal = min(h(i),h2(i));% How many values are the same
+    sumOverlap = sumOverlap + minVal;
 end
 
-porcOverlap = sumOverlap/sumHist;
+porcOverlap = sumOverlap/sumHist;% What is the % of histogram intersected

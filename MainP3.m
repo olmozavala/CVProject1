@@ -8,7 +8,7 @@
 folders = {'pict/c1/' 'pict/c2/' 'pict/c3/'};
 
 total = 30;%Total number of images
-nbins = 50;%Number of bins per histogram
+nbins = 256;%Number of bins per histogram
 allNames = cell(total,1);
 idx = 1;
 
