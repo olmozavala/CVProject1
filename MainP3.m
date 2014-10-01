@@ -53,9 +53,11 @@ for exercise=1:3
             relevant = relevant + 1;
         end
         precision(retrieved) = relevant/retrieved;
-        recall(retrieved) = retrieved/total;
+        recall(retrieved) = relevant/10;
     end
     % I couldn't find any better way to plot the precision/recall
-    subplot(1,3,exercise); hold on; plot(precision,recall,'or');
+    subplot(1,3,exercise); hold on; plot(precision,recall,'-*');
     title(strcat('Precision recall for',baseImageName));
+    xlabel('Precision');
+    ylabel('Recall');
 end
