@@ -1,13 +1,14 @@
 %% Problem 3 (25 points) Content-based image retrieval
 % For this problem the objective was to compare images using its histogram.
 % We search similar images depending on how similar their histograms were. 
-close all;
-clear all;
-clc;
+%close all;
+%clear all;
+%clc;
 
-folders = {'images/pict/c1/' 'images/pict/c2/' 'images/pict/c3/'};
+folders = {'pict/c1/' 'pict/c2/' 'pict/c3/'};
 
 total = 30;%Total number of images
+nbins = 50;%Number of bins per histogram
 allNames = cell(total,1);
 idx = 1;
 
@@ -34,13 +35,13 @@ for exercise=1:3
     % Obtains the percentage of histogram overlap for each image
     for retrieved=1:total
         testImage = imread(char(allNames(retrieved)));
-        avgOverlap(retrieved) = oz_avgPorcOverlap(baseImage, testImage);
+        avgOverlap(retrieved) = oz_avgPorcOverlap(baseImage, testImage, nbins);
     end
 
     % Orders the Overlap of the histograms
     [sortOverlap sortIndx] = sort(avgOverlap, 'descend');
-    disp(strcat('Top 5 images for_ ',baseImageName));
-    disp(allNames(sortIndx(1:5))); 
+    disp(strcat('Top 10 images for_ ',baseImageName));
+    disp(allNames(sortIndx(1:10))); 
 
     % Compute Precision Recall
     relevant = 0;
