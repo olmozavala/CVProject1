@@ -20,7 +20,8 @@ function match=histinter(img1, img2)
 %compute the histogram intersection
 h1=[imhist(img1(:,:,1));imhist(img1(:,:,2));imhist(img1(:,:,3))];
 h2=[imhist(img2(:,:,1));imhist(img2(:,:,2));imhist(img2(:,:,3))];
-match=sum(min(h1,h2));
+match=sum(min(h1,h2))/min(sum(h1),sum(h2));
+% match=sum(min(h1,h2));
 
 
 end
