@@ -48,7 +48,7 @@ end
 close(h)
 
 %plot curve for image x
-x=500;
+x=401;
 plot(precision_recall(x,:,2),precision_recall(x,:,3));
 xlabel('Precision');
 ylabel('Recall');
