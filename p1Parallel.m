@@ -8,7 +8,7 @@ totalImages = 1000;
 
 % Running in parallel, check if the pool of threads is already open
 if matlabpool('size') == 0 
-    matlabpool open 8 % Opens 4 threads
+    matlabpool open 4 % Opens 4 threads
 end
 
 tic;
