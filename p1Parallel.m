@@ -8,7 +8,9 @@ totalImages = 1000;
 
 % Running in parallel, check if the pool of threads is already open
 if matlabpool('size') == 0 
-    matlabpool open 4 % Opens 4 threads
+    infoLocal = parcluster('local');
+    maxWorkers = infoLocal.NumWorkers;
+    matlabpool('open',maxWorkers);
 end
 
 tic;
