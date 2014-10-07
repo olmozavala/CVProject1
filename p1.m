@@ -5,6 +5,7 @@ close all
 %histograms
 h=waitbar(0,'Creating histograms');
 hists=zeros([1000,768]);
+tic;
 for i=0:999
     waitbar(i/1000);
     fname=sprintf('corel/%i.jpg',i);
@@ -15,16 +16,19 @@ for i=0:999
     [h_im_b]=hist(reshape(im(:,:,3),[1 size(im,1)*size(im,2)]),256);
     hists(i+1,:)=[h_im_r h_im_g h_im_b];
 end
+toc;
 
 %histogram intersections
 close(h);h=waitbar(0,'Calculating histogram distances');
 dists=zeros([1000,1000]);
+tic;
 for i=1:1000
     waitbar(i/1000);
     for j=1:1000
     dists(i,j)=sum(min(hists(i,:),hists(j,:)));
     end
 end
+toc;
 [Y, ind] = sort(-dists);
 
 %precision recall[query image, all images, PR]
@@ -53,6 +57,3 @@ plot(precision_recall(x,:,2),precision_recall(x,:,3));
 xlabel('Precision');
 ylabel('Recall');
 set(gcf,'Color',[1 1 1]);
-
-
-
