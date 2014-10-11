@@ -1,8 +1,5 @@
-function avgPR = computeavgPR(totalImages, orderedIndexes, precision_recall)
+function avgPR = computeAvgPR(totalImages, orderedIndexes, precision_recall)
 
-    % First dimension  has 1,...,totalImages for each column
-    % Second dimension has the Precision for each image
-    % Third dimension has the Recall for each image
     avgPR=zeros(10,2);
     display('Computing average precision and rank....');
     parfor_progress(totalImages);% External library Copyright (c) 2011, Jeremy Scheff

@@ -62,7 +62,7 @@ simplicityPR=[  0.47477 178.3529;
                 0.33971 271.2211 ];
 
 %% Average precision and rank 
-avgPR=computeavgPR(totalImages, ind, precision_recall);
+avgPR=computeAvgPR(totalImages, ind, precision_recall);
 
 %% Plot average precision 
 subplot(1,2,1); 
