@@ -40,7 +40,6 @@ toc;
 tic;
 dists = computeHistDist(hists,totalImages);
 [Y, ind] = sort(-dists);
-[Y, rank] = sort(ind);
 toc;
 
 %% Precision recall[query image, all images, PR]
@@ -63,19 +62,7 @@ simplicityPR=[  0.47477 178.3529;
                 0.33971 271.2211 ];
 
 %% Average precision and rank 
-avgPR=zeros(10,2);
-for i=1:totalImages
-    category=ceil(i/100);
-    %average precision
-    avgPR(category,1)=avgPR(category,1)+sum(precision_recall(i,1:100,2));
-    %average rank (there is probably a better way)
-    for j=1:totalImages
-        if ceil(ind(j,i)/100)==category 
-            avgPR(category,2)=avgPR(category,2)+j;
-        end
-    end
-end
-avgPR=avgPR/10000;
+avgPR=computeavgPR(totalImages, ind, precision_recall);
 
 %% Plot average precision 
 subplot(1,2,1); 
