@@ -26,13 +26,13 @@ tic;
 % The option indicates which filters are we using. 
 % Option = 1. Only using the intensity filter (no filter)
 % Option = 2. Uses LoG filter
-option = 2;
+option = 1;
 [filteredImg numFilters]= filterImages(images,option);
 toc;
 
 %% Compute histograms for each filtered image
 tic;
-bins = 256;
+bins = 56;
 hists = computeHist(totalImages, filteredImg, numFilters, bins);
 toc;
 
