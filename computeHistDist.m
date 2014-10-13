@@ -1,6 +1,5 @@
 function dists = computeHistDist(hists,totalImages)
 
-    display('Calculating histogram distances');
     parfor_progress(totalImages);% External library Copyright (c) 2011, Jeremy Scheff
     dists=zeros([totalImages,totalImages]);
     parfor i=1:totalImages

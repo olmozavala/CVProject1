@@ -1,7 +1,6 @@
 function avgPR = computeAvgPR(totalImages, orderedIndexes, precision_recall)
 
     avgPR=zeros(10,2);
-    display('Computing average precision and rank....');
     parfor_progress(totalImages);% External library Copyright (c) 2011, Jeremy Scheff
     %% Average precision and rank 
     for i=1:totalImages
