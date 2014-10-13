@@ -1,21 +1,32 @@
 clc;
-clear all;
-close all;
+%clear all;
+%close all;
 
 addpath('externalLib');
 %histograms
 totalImages = 1000;
 
 % Running in parallel, check if the pool of threads is already open
-if matlabpool('size') == 0 
-    infoLocal = parcluster('local');
-    maxWorkers = infoLocal.NumWorkers;
-    matlabpool('open',maxWorkers);
-end
+% if matlabpool('size') == 0 
+%     infoLocal = parcluster('local');
+%     maxWorkers = infoLocal.NumWorkers;
+%     matlabpool('open',maxWorkers);
+% end
 
 %% Read images
 tic;
-images = readImages(totalImages, 'corel');
+origImages = readImages(totalImages, 'corel');
+toc;
+
+%% Reduce size of images (testing to improve speed)
+tic;
+display('Reducing size of pyramids...');
+imgDims = size(origImages);
+images = zeros(imgDims(1), ceil(imgDims(2)/2), ceil(imgDims(3)/2), 3);
+parfor i=1:totalImages
+    images(i,:,:,:) = impyramid(squeeze(origImages(i,:,:,:)),'reduce');
+end
+clear origImages;
 toc;
 
 %% Apply filters. 
@@ -26,13 +37,13 @@ tic;
 % The option indicates which filters are we using. 
 % Option = 1. Only using the intensity filter (no filter)
 % Option = 2. Uses LoG filter
-option = 2;
+option = 3;
 [filteredImg numFilters]= filterImages(images,option);
 toc;
 
 %% Compute histograms for each filtered image
 tic;
-bins = 256;
+bins = 20;
 hists = computeHist(totalImages, filteredImg, numFilters, bins);
 toc;
 

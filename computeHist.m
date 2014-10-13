@@ -1,16 +1,37 @@
 function hists = computeHist(totalImages, images, numFilters,bins)
 
-    hists=zeros([totalImages*numFilters,bins*3*numFilters]);%One filter for each band
+    hists=zeros([totalImages,bins*3*numFilters]);%One filter for each band
 
     display('Computing histograms....');
     parfor_progress(totalImages);% External library Copyright (c) 2011, Jeremy Scheff
-    parfor i=1:totalImages
-        im = images(i,:,:,:);
-        im = squeeze(im);%Remove the first 'simgle' dimension
-        [h_im_r]=hist(reshape(im(:,:,1),[1 size(im,1)*size(im,2)]),bins);
-        [h_im_g]=hist(reshape(im(:,:,2),[1 size(im,1)*size(im,2)]),bins);
-        [h_im_b]=hist(reshape(im(:,:,3),[1 size(im,1)*size(im,2)]),bins);
-        hists(i,:)=[h_im_r h_im_g h_im_b];
+    totRows = size(images(1,:,:,:),2);
+    totCols = size(images(1,:,:,:),3);
+
+    minRange = -256;
+    maxRange = 512;
+    histRange = [minRange:(maxRange-minRange)/(bins-1):maxRange]
+
+    tempSpectralHist = zeros(3*bins*numFilters,1);
+    for i=1:totalImages
+
+        for j=0:numFilters-1
+            im = images(i+j,:,:,:);
+            im = squeeze(im);%Remove the first 'simgle' dimension
+
+            % 0 - bins
+            %tempSpectralHist(j*bins*3+1:j*bins*3+bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),bins);
+            % bins - bins*2
+            %tempSpectralHist(j*bins*3+bins+1:j*bins*3+2*bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),bins);
+            % bins - bins*3
+            %tempSpectralHist(j*bins*3+2*bins+1:j*bins*3+3*bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),bins);
+            tempSpectralHist(j*bins*3+1:j*bins*3+bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),histRange);
+            % bins - bins*2
+            tempSpectralHist(j*bins*3+bins+1:j*bins*3+2*bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),histRange);
+            % bins - bins*3
+            tempSpectralHist(j*bins*3+2*bins+1:j*bins*3+3*bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),histRange);
+
+        end
+        hists(i,:)= tempSpectralHist;
         parfor_progress;
     end
     parfor_progress(0);
