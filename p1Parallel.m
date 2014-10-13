@@ -13,19 +13,37 @@ if matlabpool('size') == 0
     matlabpool('open',maxWorkers);
 end
 
+%% Read images
 tic;
-hists = computeHist(totalImages,'corel');
+images = readImages(totalImages, 'corel');
 toc;
 
-%histogram intersections
+%% Apply filters. 
+% The output should contain one extra dimension, for the number
+% of filters applied. If we use one filter, then filterImg size = images, for 
+% two filters filterIMg size = 2*images
+tic;
+% The option indicates which filters are we using. 
+% Option = 1. Only using the intensity filter (no filter)
+% Option = 2. Uses LoG filter
+option = 2;
+[filteredImg numFilters]= filterImages(images,option);
+toc;
+
+%% Compute histograms for each filtered image
+tic;
+bins = 256;
+hists = computeHist(totalImages, filteredImg, numFilters, bins);
+toc;
+
+%% Histogram intersections
 tic;
 dists = computeHistDist(hists,totalImages);
 [Y, ind] = sort(-dists);
 toc;
 
-%precision recall[query image, all images, PR]
+%% Precision recall[query image, all images, PR]
 %every image is queried against all totalImages images
-
 tic;
 precision_recall = computePrecRecall(totalImages, ind);
 toc;
