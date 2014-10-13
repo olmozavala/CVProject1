@@ -4,7 +4,7 @@ function precision_recall = computePrecRecall(totalImages, orderedIndexes)
     % Second dimension has the Precision for each image
     % Third dimension has the Recall for each image
     precision_recall=zeros([totalImages,totalImages,3]);
-
+    display('Computing precision recall....');
     parfor_progress(totalImages);% External library Copyright (c) 2011, Jeremy Scheff
     for j=1:totalImages
         correct_ones = 0;

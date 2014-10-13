@@ -48,10 +48,44 @@ tic;
 precision_recall = computePrecRecall(totalImages, ind);
 toc;
 
+
+%% Average precision and rank for Simplicity method for each class
+simplicityPR=[  0.47477 178.3529;
+                0.32446 242.0187;
+                0.33027 261.6305;
+                0.36296 260.7511;
+                0.98117 49.3074;
+                0.39964 197.1079;
+                0.40218 298.6917;
+                0.71858 91.5890;
+                0.34188 230.2441;
+                0.33971 271.2211 ];
+
+%% Average precision and rank 
+avgPR=computeAvgPR(totalImages, ind, precision_recall);
+
+%% Plot average precision 
+subplot(1,2,1); 
+plot(1:10,simplicityPR(:,1),'*',1:10,avgPR(:,1),'o');
+xlabel('Category');
+ylabel('Precision');
+legend('Simplicity','Color Histogram');
+xlim([0,11]);
+grid on;
+
+%% Plot average rank
+subplot(1,2,2); 
+plot(1:10,simplicityPR(:,2),'*',1:10,avgPR(:,2),'o');
+xlabel('Category');
+ylabel('Rank');
+legend('Simplicity','Color Histogram');
+xlim([0,11]);
+grid on;
+
 %plot curve for image x
-x=401;
-plot(precision_recall(x,:,2),precision_recall(x,:,3));
-xlabel('Precision');
-ylabel('Recall');
-set(gcf,'Color',[1 1 1]);
+% x=499;
+% plot(precision_recall(x,:,2),precision_recall(x,:,3));
+% xlabel('Precision');
+% ylabel('Recall');
+
 
