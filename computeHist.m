@@ -11,10 +11,10 @@ function hists = computeHist(totalImages, images, numFilters,bins)
     histRange = [minRange:(maxRange-minRange)/(bins-1):maxRange]
 
     tempSpectralHist = zeros(3*bins*numFilters,1);
-    for i=1:totalImages
+    for i=0:totalImages-1
 
         for j=0:numFilters-1
-            im = images(i+j,:,:,:);
+            im = images(i*numFilters+1+j,:,:,:);
             im = squeeze(im);%Remove the first 'simgle' dimension
 
             % ---- Using bins ---------
@@ -27,7 +27,8 @@ function hists = computeHist(totalImages, images, numFilters,bins)
             %empSpectralHist(j*bins*3+bins+1:j*bins*3+2*bins) = hist(reshape(im(:,:,2),[1 totRows*totCols]),histRange);
             %empSpectralHist(j*bins*3+2*bins+1:j*bins*3+3*bins) = hist(reshape(im(:,:,3),[1 totRows*totCols]),histRange);
         end
-        hists(i,:)= tempSpectralHist;
+
+        hists(i+1,:)= tempSpectralHist;
         parfor_progress;
     end
     parfor_progress(0);

@@ -106,13 +106,13 @@ function [filteredImg numFilters] = filterImages(images, option)
                 %min(min(filteredImg(i*numFilters+1,:,:,3)))
                 %max(max(filteredImg(i*numFilters+1,:,:,3)))
                 % Second filter is dx
-                filteredImg(i*numFilters+2,:,:,1) = images(i+1,:,:,1);
-                filteredImg(i*numFilters+2,:,:,2) = images(i+1,:,:,2);
-                filteredImg(i*numFilters+2,:,:,3) = images(i+1,:,:,3);
+                %filteredImg(i*numFilters+2,:,:,1) = images(i+1,:,:,1);
+                %filteredImg(i*numFilters+2,:,:,2) = images(i+1,:,:,2);
+                %filteredImg(i*numFilters+2,:,:,3) = images(i+1,:,:,3);
                 % Second filter is dx
-                %filteredImg(i*numFilters+2,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),gaussMask, 'same');
-                %filteredImg(i*numFilters+2,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),gaussMask, 'same');
-                %filteredImg(i*numFilters+2,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),gaussMask, 'same');
+                filteredImg(i*numFilters+2,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),gaussMask, 'same');
+                filteredImg(i*numFilters+2,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),gaussMask, 'same');
+                filteredImg(i*numFilters+2,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),gaussMask, 'same');
                 %min(min(filteredImg(i*numFilters+4,:,:,3)))
                 %max(max(filteredImg(i*numFilters+4,:,:,3)))
                 parfor_progress;

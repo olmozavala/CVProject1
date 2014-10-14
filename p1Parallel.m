@@ -41,7 +41,7 @@ tic;
 % The option indicates which filters are we using. 
 % option = 1. Only using the intensity filter (no filter)
 % option = 2. Uses Gauss filter
-option = 4;
+option = 2;
 display('Filtering images....');
 [filteredImg numFilters]= filterImages(images,option);
 toc;
