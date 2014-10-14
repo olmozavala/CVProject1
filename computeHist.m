@@ -18,14 +18,14 @@ function hists = computeHist(totalImages, images, numFilters,bins)
             im = squeeze(im);%Remove the first 'simgle' dimension
 
             % ---- Using bins ---------
-            tempSpectralHist(j*bins*3+1:j*bins*3+bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),bins);
-            tempSpectralHist(j*bins*3+bins+1:j*bins*3+2*bins) = hist(reshape(im(:,:,2),[1 totRows*totCols]),bins);
-            tempSpectralHist(j*bins*3+2*bins+1:j*bins*3+3*bins) = hist(reshape(im(:,:,3),[1 totRows*totCols]),bins);
+            %tempSpectralHist(j*bins*3+1:j*bins*3+bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),bins);
+            %tempSpectralHist(j*bins*3+bins+1:j*bins*3+2*bins) = hist(reshape(im(:,:,2),[1 totRows*totCols]),bins);
+            %tempSpectralHist(j*bins*3+2*bins+1:j*bins*3+3*bins) = hist(reshape(im(:,:,3),[1 totRows*totCols]),bins);
             
             % ---- Using ranges ---------
-            %tempSpectralHist(j*bins*3+1:j*bins*3+bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),histRange);
-            %empSpectralHist(j*bins*3+bins+1:j*bins*3+2*bins) = hist(reshape(im(:,:,2),[1 totRows*totCols]),histRange);
-            %empSpectralHist(j*bins*3+2*bins+1:j*bins*3+3*bins) = hist(reshape(im(:,:,3),[1 totRows*totCols]),histRange);
+            tempSpectralHist(j*bins*3+1:j*bins*3+bins) = hist(reshape(im(:,:,1),[1 totRows*totCols]),histRange);
+            tempSpectralHist(j*bins*3+bins+1:j*bins*3+2*bins) = hist(reshape(im(:,:,2),[1 totRows*totCols]),histRange);
+            tempSpectralHist(j*bins*3+2*bins+1:j*bins*3+3*bins) = hist(reshape(im(:,:,3),[1 totRows*totCols]),histRange);
         end
 
         hists(i+1,:)= tempSpectralHist;

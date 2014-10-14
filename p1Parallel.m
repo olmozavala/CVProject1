@@ -1,6 +1,6 @@
 clc;
-%clear all;
-%close all;
+clear all;
+close all;
 
 addpath('externalLib');
 %histograms
@@ -41,14 +41,14 @@ tic;
 % The option indicates which filters are we using. 
 % option = 1. Only using the intensity filter (no filter)
 % option = 2. Uses Gauss filter
-option = 2;
+option = 3;
 display('Filtering images....');
 [filteredImg numFilters]= filterImages(images,option);
 toc;
 
 %% Compute histograms for each filtered image
 tic;
-bins = 100;
+bins = 120;
 display('Computing histograms....');
 hists = computeHist(totalImages, filteredImg, numFilters, bins);
 toc;
