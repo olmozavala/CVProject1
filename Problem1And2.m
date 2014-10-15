@@ -79,24 +79,33 @@ for problem=1:2
 
     %% Average precision and rank 
     display('Computing average precision and rank....');
-    avgPR=computeAvgPR(totalImages, ind, precision_recall);
+    switch problem
+        case 1
+            avgPR1=computeAvgPR(totalImages, ind, precision_recall);
+        case 2
+            avgPR2=computeAvgPR(totalImages, ind, precision_recall);
+    end
+    
+end
 
     %% Plot average precision 
     figure('Position',[100,100,1000,600])
     subplot(1,2,1); 
-    plot(1:10,simplicityPR(:,1),'*',1:10,avgPR(:,1),'o');
-    xlabel('Category');
+    plot(1:10,simplicityPR(:,1),'*',1:10,avgPR1(:,1),'o',1:10,avgPR2(:,1),'s');
+    title('Average Precision')
+    xlabel('Category ID');
     ylabel('Precision');
-    legend('Simplicity',titles{problem});
+    legend('SIMPLIcity','Color Histogram','Spectral Histogram');
     xlim([0,11]);
     grid on;
 
     %% Plot average rank
     subplot(1,2,2); 
-    plot(1:10,simplicityPR(:,2),'*',1:10,avgPR(:,2),'o');
-    xlabel('Category');
+    plot(1:10,simplicityPR(:,2),'*',1:10,avgPR1(:,2),'o',1:10,avgPR2(:,2),'s');
+    title('Average Rank')
+    xlabel('Category ID');
     ylabel('Rank');
-    legend('Simplicity',titles{problem});
+    legend('SIMPLIcity','Color Histogram','Spectral Histogram');
     xlim([0,11]);
     grid on;
 
@@ -106,5 +115,4 @@ for problem=1:2
     % xlabel('Precision');
     % ylabel('Recall');
 
-    pause(.5); %Just to display original figure
-end
+

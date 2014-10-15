@@ -34,6 +34,8 @@ toc;
 
 
 %% Compare descriptors to determine scores 
+%Total Images set to 100 for TESTING PURPOSES!!!!
+totalImages = 100;
 tic;
 display('Computing Scores...');
 parfor_progress(totalImages*totalImages);
