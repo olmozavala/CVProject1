@@ -50,44 +50,30 @@ function [filteredImg numFilters] = filterImages(images, option, totalImages)
                     filteredImg(i*numFilters+1,:,:,1) = images(i+1,:,:,1);
                     filteredImg(i*numFilters+1,:,:,2) = images(i+1,:,:,2);
                     filteredImg(i*numFilters+1,:,:,3) = images(i+1,:,:,3);
-                    %min(min(filteredImg(i*numFilters+1,:,:,3)))
-                    %max(max(filteredImg(i*numFilters+1,:,:,3)))
                     % Second filter is dx
                     filteredImg(i*numFilters+2,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),dx, 'same');
                     filteredImg(i*numFilters+2,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),dx, 'same');
                     filteredImg(i*numFilters+2,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),dx, 'same');
-                    %min(min(filteredImg(i*numFilters+2,:,:,3)))
-                    %max(max(filteredImg(i*numFilters+2,:,:,3)))
                     % Third filter is dy
                     filteredImg(i*numFilters+3,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),dy, 'same');
                     filteredImg(i*numFilters+3,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),dy, 'same');
                     filteredImg(i*numFilters+3,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),dy, 'same');
-                    %min(min(filteredImg(i*numFilters+3,:,:,3)))
-                    %max(max(filteredImg(i*numFilters+3,:,:,3)))
                     % Fordth filter is dxx
                     filteredImg(i*numFilters+4,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),dxx, 'same');
                     filteredImg(i*numFilters+4,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),dxx, 'same');
                     filteredImg(i*numFilters+4,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),dxx, 'same');
-                    %min(min(filteredImg(i*numFilters+4,:,:,3)))
-                    %max(max(filteredImg(i*numFilters+4,:,:,3)))
                     % Fifth filter is dxx
                     filteredImg(i*numFilters+5,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),dyy, 'same');
                     filteredImg(i*numFilters+5,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),dyy, 'same');
                     filteredImg(i*numFilters+5,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),dyy, 'same');
-                    %min(min(filteredImg(i*numFilters+5,:,:,3)))
-                    %max(max(filteredImg(i*numFilters+5,:,:,3)))
                     % Sixth filter is LoG
                     filteredImg(i*numFilters+6,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),maskLoG, 'same');
                     filteredImg(i*numFilters+6,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),maskLoG, 'same');
                     filteredImg(i*numFilters+6,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),maskLoG, 'same');
-                    %min(min(filteredImg(i*numFilters+6,:,:,3)))
-                    %max(max(filteredImg(i*numFilters+6,:,:,3)))
                     % Seventh filter is Gauss
                     filteredImg(i*numFilters+7,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),gaussMask, 'same');
                     filteredImg(i*numFilters+7,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),gaussMask, 'same');
                     filteredImg(i*numFilters+7,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),gaussMask, 'same');
-                    %min(min(filteredImg(i*numFilters+7,:,:,3)))
-                    %max(max(filteredImg(i*numFilters+7,:,:,3)))
                     parfor_progress;
                 end
                 parfor_progress(0);

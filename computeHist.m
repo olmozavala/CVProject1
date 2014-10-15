@@ -13,11 +13,38 @@ function hists = computeHist(totalImages, images, numFilters,bins)
     minRange = 0;
     maxRange = 256;
     histRange = [minRange:(maxRange-minRange)/(bins-1):maxRange];
-
     tempSpectralHist = zeros(3*bins*numFilters,1);
     for i=0:totalImages-1
         for j=0:numFilters-1
-
+            % Modifying the range depending on the filter used (it didn't help)
+            %{
+            switch j
+                case 0
+                    minRange = 0;
+                    maxRange = 256;
+                case 1
+                    minRange = -256;
+                    maxRange = 256;
+                case 2
+                    minRange = -256;
+                    maxRange = 256;
+                case 3
+                    minRange = -512;
+                    maxRange = 512;
+                case 4
+                    minRange = -512;
+                    maxRange = 512;
+                case 5
+                    minRange = 0;
+                    maxRange = 256;
+                case 6
+                    minRange = 0;
+                    maxRange = 256;
+                case 1
+            end
+                    
+            histRange = [minRange:(maxRange-minRange)/(bins-1):maxRange];
+            }%
             if(totalImages>1 || numFilters>1) % We have more than one image
                 im = images(i*numFilters+1+j,:,:,:);
                 im = squeeze(im);%Remove the first 'simgle' dimension

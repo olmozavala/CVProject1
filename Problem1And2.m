@@ -55,6 +55,7 @@ simplicityPR=[  0.47477 178.3529;
     0.33971 271.2211 ];
 
 %% Histogram intersections
+titles = {'Color histogram','Spectral histogram'};
 for problem=1:2
     switch problem
         case 1
@@ -86,7 +87,7 @@ for problem=1:2
     plot(1:10,simplicityPR(:,1),'*',1:10,avgPR(:,1),'o');
     xlabel('Category');
     ylabel('Precision');
-    legend('Simplicity','Color Histogram');
+    legend('Simplicity',titles{problem});
     xlim([0,11]);
     grid on;
 
@@ -95,7 +96,7 @@ for problem=1:2
     plot(1:10,simplicityPR(:,2),'*',1:10,avgPR(:,2),'o');
     xlabel('Category');
     ylabel('Rank');
-    legend('Simplicity','Color Histogram');
+    legend('Simplicity',titles{problem});
     xlim([0,11]);
     grid on;
 
