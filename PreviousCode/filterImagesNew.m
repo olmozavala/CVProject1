@@ -1,5 +1,5 @@
 % The parameter option indicates which filters are we using.
-function [filteredImg numFilters] = filterImages(images, option, totalImages)
+function [filteredImg numFilters] = filterImagesNew(images, option, totalImages)
     switch option
         case 1 %No filters (just the intensity filter)
             filteredImg = images;
@@ -25,11 +25,11 @@ function [filteredImg numFilters] = filterImages(images, option, totalImages)
             numFilters = 7;
 
             if(totalImages > 1) % We have more than one image
-                filteredImg = zeros(dimsImages(1)*numFilters, dimsImages(2), dimsImages(3), dimsImages(4));
+                filteredImge= zeros(dimsImages(1)*numFilters, dimsImages(2), dimsImages(3), dimsImages(4));
+                parfor_progress(length(images));
             else
                 filteredImg = zeros(numFilters, dimsImages(1), dimsImages(2), dimsImages(3));
             end
-
             kernelSize = 5;
             sigma = 0.7;
 
@@ -44,15 +44,14 @@ function [filteredImg numFilters] = filterImages(images, option, totalImages)
             gaussMask = oz_gaussMask(kernelSize, sigma);% Range [0 256]
 
             if(totalImages > 1) % We have more than one image
-                parfor_progress(totalImages);
+                % TODO missing Gabor filter
                 for i=0:totalImages-1
+                    parfor_progress;
                     % First filter is the intensity filter
                     filteredImg(i*numFilters+1,:,:,1) = images(i+1,:,:,1);
                     filteredImg(i*numFilters+1,:,:,2) = images(i+1,:,:,2);
                     filteredImg(i*numFilters+1,:,:,3) = images(i+1,:,:,3);
-                    %min(min(filteredImg(i*numFilters+1,:,:,3)))
-                    %max(max(filteredImg(i*numFilters+1,:,:,3)))
-                    % Second filter is dx
+
                     filteredImg(i*numFilters+2,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),dx, 'same');
                     filteredImg(i*numFilters+2,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),dx, 'same');
                     filteredImg(i*numFilters+2,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),dx, 'same');
@@ -86,44 +85,55 @@ function [filteredImg numFilters] = filterImages(images, option, totalImages)
                     filteredImg(i*numFilters+7,:,:,1) = conv2(squeeze(images(i+1,:,:,1)),gaussMask, 'same');
                     filteredImg(i*numFilters+7,:,:,2) = conv2(squeeze(images(i+1,:,:,2)),gaussMask, 'same');
                     filteredImg(i*numFilters+7,:,:,3) = conv2(squeeze(images(i+1,:,:,3)),gaussMask, 'same');
-                    %min(min(filteredImg(i*numFilters+7,:,:,3)))
-                    %max(max(filteredImg(i*numFilters+7,:,:,3)))
-                    parfor_progress;
                 end
                 parfor_progress(0);
             else
-                % First filter is the intensity filter
-                filteredImg(1,:,:,1) = images(:,:,1);
-                filteredImg(1,:,:,2) = images(:,:,2);
-                filteredImg(1,:,:,3) = images(:,:,3);
-                % Second filter is dx
-                filteredImg(2,:,:,1) = conv2(images(:,:,1),dx, 'same');
-                filteredImg(2,:,:,2) = conv2(images(:,:,2),dx, 'same');
-                filteredImg(2,:,:,3) = conv2(images(:,:,3),dx, 'same');
-                % Third filter is dy
-                filteredImg(3,:,:,1) = conv2(images(:,:,1),dy, 'same');
-                filteredImg(3,:,:,2) = conv2(images(:,:,2),dy, 'same');
-                filteredImg(3,:,:,3) = conv2(images(:,:,3),dy, 'same');
-                % Fordth filter is dxx
-                filteredImg(4,:,:,1) = conv2(images(:,:,1),dxx, 'same');
-                filteredImg(4,:,:,2) = conv2(images(:,:,2),dxx, 'same');
-                filteredImg(4,:,:,3) = conv2(images(:,:,3),dxx, 'same');
-                %min(min(filteredImg(i*numFilters+4,:,:,3)))
-                %max(max(filteredImg(i*numFilters+4,:,:,3)))
-                % Fifth filter is dxx
-                filteredImg(5,:,:,1) = conv2(images(:,:,1),dyy, 'same');
-                filteredImg(5,:,:,2) = conv2(images(:,:,2),dyy, 'same');
-                filteredImg(5,:,:,3) = conv2(images(:,:,3),dyy, 'same');
-                % Sixth filter is LoG
-                filteredImg(6,:,:,1) = conv2(images(:,:,1),maskLoG, 'same');
-                filteredImg(6,:,:,2) = conv2(images(:,:,2),maskLoG, 'same');
-                filteredImg(6,:,:,3) = conv2(images(:,:,3),maskLoG, 'same');
-                % Seventh filter is Gauss
-                filteredImg(7,:,:,1) = conv2(images(:,:,1),gaussMask, 'same');
-                filteredImg(7,:,:,2) = conv2(images(:,:,2),gaussMask, 'same');
-                filteredImg(7,:,:,3) = conv2(images(:,:,3),gaussMask, 'same');
-            end
 
+                for i=0:totalImages-1
+                    % First filter is the intensity filter
+                    filteredImg(i*numFilters+1,:,:,1) = images(:,:,1);
+                    filteredImg(i*numFilters+1,:,:,2) = images(:,:,2);
+                    filteredImg(i*numFilters+1,:,:,3) = images(:,:,3);
+                    %min(min(filteredImg(i*numFilters+1,:,:,3)))
+                    %max(max(filteredImg(i*numFilters+1,:,:,3)))
+                    % Second filter is dx
+                    filteredImg(i*numFilters+2,:,:,1) = conv2(images(:,:,1),dx, 'same');
+                    filteredImg(i*numFilters+2,:,:,2) = conv2(images(:,:,2),dx, 'same');
+                    filteredImg(i*numFilters+2,:,:,3) = conv2(images(:,:,3),dx, 'same');
+                    %min(min(filteredImg(i*numFilters+2,:,:,3)))
+                    %max(max(filteredImg(i*numFilters+2,:,:,3)))
+                    % Third filter is dy
+                    filteredImg(i*numFilters+3,:,:,1) = conv2(images(:,:,1),dy, 'same');
+                    filteredImg(i*numFilters+3,:,:,2) = conv2(images(:,:,2),dy, 'same');
+                    filteredImg(i*numFilters+3,:,:,3) = conv2(images(:,:,3),dy, 'same');
+                    %min(min(filteredImg(i*numFilters+3,:,:,3)))
+                    %max(max(filteredImg(i*numFilters+3,:,:,3)))
+                    % Fordth filter is dxx
+                    filteredImg(i*numFilters+4,:,:,1) = conv2(images(:,:,1),dxx, 'same');
+                    filteredImg(i*numFilters+4,:,:,2) = conv2(images(:,:,2),dxx, 'same');
+                    filteredImg(i*numFilters+4,:,:,3) = conv2(images(:,:,3),dxx, 'same');
+                    %min(min(filteredImg(i*numFilters+4,:,:,3)))
+                    %max(max(filteredImg(i*numFilters+4,:,:,3)))
+                    % Fifth filter is dxx
+                    filteredImg(i*numFilters+5,:,:,1) = conv2(images(:,:,1),dyy, 'same');
+                    filteredImg(i*numFilters+5,:,:,2) = conv2(images(:,:,2),dyy, 'same');
+                    filteredImg(i*numFilters+5,:,:,3) = conv2(images(:,:,3),dyy, 'same');
+                    %min(min(filteredImg(i*numFilters+5,:,:,3)))
+                    %max(max(filteredImg(i*numFilters+5,:,:,3)))
+                    % Sixth filter is LoG
+                    filteredImg(i*numFilters+6,:,:,1) = conv2(images(:,:,1),maskLoG, 'same');
+                    filteredImg(i*numFilters+6,:,:,2) = conv2(images(:,:,2),maskLoG, 'same');
+                    filteredImg(i*numFilters+6,:,:,3) = conv2(images(:,:,3),maskLoG, 'same');
+                    %min(min(filteredImg(i*numFilters+6,:,:,3)))
+                    %max(max(filteredImg(i*numFilters+6,:,:,3)))
+                    % Seventh filter is Gauss
+                    filteredImg(i*numFilters+7,:,:,1) = conv2(images(:,:,1),gaussMask, 'same');
+                    filteredImg(i*numFilters+7,:,:,2) = conv2(images(:,:,2),gaussMask, 'same');
+                    filteredImg(i*numFilters+7,:,:,3) = conv2(images(:,:,3),gaussMask, 'same');
+                    %min(min(filteredImg(i*numFilters+7,:,:,3)))
+                    %max(max(filteredImg(i*numFilters+7,:,:,3)))
+                end
+            end
         case 4 % Intensity and Gauss
             dimsImages = size(images);
             numFilters = 2;

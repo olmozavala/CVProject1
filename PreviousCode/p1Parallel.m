@@ -42,8 +42,10 @@ tic;
 % option = 1. Only using the intensity filter (no filter)
 % option = 2. Uses Gauss filter
 option = 3;
+
 display('Filtering images....');
-[filteredImg numFilters]= filterImages(images,option);
+[filteredImg numFilters]= filterImages(images,option,totalImages);
+%[filteredImg numFilters]= filterImagesNew(images,option,totalImages);
 toc;
 
 %% Compute histograms for each filtered image
