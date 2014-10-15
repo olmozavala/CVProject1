@@ -17,7 +17,6 @@ function hists = computeHist(totalImages, images, numFilters,bins)
     for i=0:totalImages-1
         for j=0:numFilters-1
             % Modifying the range depending on the filter used (it didn't help)
-            %{
             switch j
                 case 0
                     minRange = 0;
@@ -44,7 +43,7 @@ function hists = computeHist(totalImages, images, numFilters,bins)
             end
                     
             histRange = [minRange:(maxRange-minRange)/(bins-1):maxRange];
-            }%
+
             if(totalImages>1 || numFilters>1) % We have more than one image
                 im = images(i*numFilters+1+j,:,:,:);
                 im = squeeze(im);%Remove the first 'simgle' dimension
