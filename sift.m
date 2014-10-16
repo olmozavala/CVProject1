@@ -40,8 +40,8 @@ else
     for i=1:totalImages
         tic;
         parfor j=1:totalImages
-            [matches, score] = vl_ubcmatch(descriptors{i}, descriptors{j});
-            scores{i,j}=uint8(score);
+            [matches, scores{i,j}] = vl_ubcmatch(descriptors{i}, descriptors{j});
+%             scores{i,j}=uint8(score);
         end
         fprintf('%d of 1000: %c',i);
         toc;
@@ -49,3 +49,17 @@ else
     save('Variables/scores.mat','scores');
 end
 toc;
+
+% Normalizing the distances
+maxScore = max(max(scores));
+normScores = scores./maxScore;
+
+% Obtaining finalScore
+siftScore = zeros(totalImages,totalImages);
+for i=1:totalImages
+    currNumOfDesc = length(descriptors{i});
+    for j=1:totalImages
+        % This is our proposed formula
+        siftScore(i,j) = mean(normScores(i,:))/( length(normScores(i,:))/currNumOfDesc );
+    end
+end
