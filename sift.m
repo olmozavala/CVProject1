@@ -75,7 +75,9 @@ parfor i=1:totalImages
     currNumOfDesc = length(descriptors{i});
     for j=1:totalImages
         % This is our proposed formula
-        siftScore(i,j) = (mean(scores{i,j}/maxDist))/( length(scores{i,j})/currNumOfDesc );
+        %siftScore(i,j) = (mean(scores{i,j}/maxDist))/( length(scores{i,j})/currNumOfDesc );
+        %weight the number of scores first, then the average distances
+        siftScore(i,j) = ((mean(scores{i,j})/maxDist))+ length(scores{i,j});
         siftOnlyMatches(i,j) = length(scores{i,j})/currNumOfDesc;
         siftMinDistance(i,j) = min([scores{i,j} 2]);
         siftScoreOnlyDistance(i,j) = (mode(scores{i,j}./maxDist));
@@ -83,10 +85,11 @@ parfor i=1:totalImages
     parfor_progress;
 end
 
-orderedIndexes = zeros(totalImages,totalImages);
-for i=1:totalImages
-    [val orderedIndexes(i,:)] = sort(siftScore(i,:));
-end
+% orderedIndexes = zeros(totalImages,totalImages);
+% for i=1:totalImages
+%     [val orderedIndexes(i,:)] = sort(siftScore(i,:));
+% end
+[Y, orderedIndexes] = sort(-siftScore);
 
 precision_recall = computePrecRecall(totalImages, orderedIndexes);
 
