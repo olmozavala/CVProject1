@@ -35,7 +35,7 @@ end
 %% Compare descriptors to determine scores 
 display('Computing Scores...');
 if exist('Variables/scores.mat', 'file')
-    load('scores.mat','scores');
+    load('scores.mat','score');
 else
     for i=1:totalImages
         tic;
@@ -48,6 +48,8 @@ else
     end
     save('Variables/scores.mat','scores');
 end
+scores = score;
+clear score;
 toc;
 
 % Normalizing the distances
