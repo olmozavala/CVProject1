@@ -3,6 +3,7 @@ clear
 close all
 addpath(genpath('externalLib'));
 addpath(genpath('Variables'));
+totalImages = 1000;
 
 % Running in parallel, check if the pool of threads is already open
 if matlabpool('size') == 0 
@@ -11,10 +12,9 @@ if matlabpool('size') == 0
     matlabpool('open',maxWorkers);
 end
 
-totalImages = 1000;
 
-disp('Reading all the images...');
-origImages = readImages(totalImages, 'corel');
+% disp('Reading all the images...');
+% origImages = readImages(totalImages, 'corel');
     
 
 %% Calculate descriptors for images
@@ -30,23 +30,21 @@ else
     end
     save('Variables/descriptors.mat','descriptors');
 end
-toc;
 
 
 %% Compare descriptors to determine scores 
-%Total Images set to 100 for TESTING PURPOSES!!!!
-totalImages = 100;
-tic;
 display('Computing Scores...');
-parfor_progress(totalImages*totalImages);
 if exist('Variables/scores.mat', 'file')
     load('scores.mat','scores');
 else
     for i=1:totalImages
-        for j=1:totalImages
-            [matches, scores{i,j}] = vl_ubcmatch(descriptors{i}, descriptors{j});
-            parfor_progress;
+        tic;
+        parfor j=1:totalImages
+            [matches, score] = vl_ubcmatch(descriptors{i}, descriptors{j});
+            scores{i,j}=uint8(score);
         end
+        fprintf('%d of 1000: %c',i);
+        toc;
     end
     save('Variables/scores.mat','scores');
 end
