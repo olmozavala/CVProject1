@@ -110,7 +110,7 @@ for problem=1:2
 end
 
     %% Plot average precision 
-    figure('Position',[100,100,1000,600])
+    figure('Position',[100,100,1500,600])
     subplot(1,2,1); 
     %Simplicity results
     plot(1:10,simplicityPR(:,1),'r*');
@@ -126,25 +126,27 @@ end
     xlabel('Category ID');
     ylabel('Precision');
     legend('SIMPLIcity','Liu Color Histogram','Liu Spectral Histogram','Color Histogram','Spectral Histogram');
+    legend('Location','northwest');
     xlim([0,11]);
     grid on;
 
     %% Plot average rank
     subplot(1,2,2); 
     %Simplicity results
-    plot(1:10,simplicityPR(:,1),'r*');
+    plot(1:10,simplicityPR(:,2),'r*');
     hold on
     %Liu results
-    plot(1:10,liuxHistsPR(:,1),'bo');
-    plot(1:10,liuxSpectralHistsPR(:,1),'bs');
+    plot(1:10,liuxHistsPR(:,2),'bo');
+    plot(1:10,liuxSpectralHistsPR(:,2),'bs');
     %Our results
-    plot(1:10,imgHistsPR(:,1),'go');
-    plot(1:10,imgSpectralHistsPR(:,1),'gs');
+    plot(1:10,imgHistsPR(:,2),'go');
+    plot(1:10,imgSpectralHistsPR(:,2),'gs');
     hold off
     title('Average Rank')
     xlabel('Category ID');
     ylabel('Rank');
     legend('SIMPLIcity','Liu Color Histogram','Liu Spectral Histogram','Color Histogram','Spectral Histogram');
+    legend('Location','southwest');
     xlim([0,11]);
     grid on;
 
