@@ -69,12 +69,14 @@ display('Computing our sift score');
 siftScore = zeros(totalImages,totalImages);
 siftMinDistance = zeros(totalImages,totalImages);
 siftScoreOnlyDistance = zeros(totalImages,totalImages);
+siftOnlyMatches= zeros(totalImages,totalImages);
 parfor_progress(totalImages);
 parfor i=1:totalImages
     currNumOfDesc = length(descriptors{i});
     for j=1:totalImages
         % This is our proposed formula
         siftScore(i,j) = (mean(scores{i,j}/maxDist))/( length(scores{i,j})/currNumOfDesc );
+        siftOnlyMatches(i,j) = length(scores{i,j})/currNumOfDesc;
         siftMinDistance(i,j) = min([scores{i,j} 2]);
         siftScoreOnlyDistance(i,j) = (mode(scores{i,j}./maxDist));
     end
