@@ -53,7 +53,7 @@ simplicityPR=[  0.47477 178.3529;
                 0.71858 91.5890;
                 0.34188 230.2441;
                 0.33971 271.2211 ];
-liuxSpectralHistsPR=[  0.4667 294.7775;
+liuxSpectPR=[  0.4667 294.7775;
                 0.3267 356.1816;
                 0.3078 367.0497;
                 0.6075 173.8379;
@@ -63,16 +63,16 @@ liuxSpectralHistsPR=[  0.4667 294.7775;
                 0.4826 242.4062;
                 0.2358 365.6872;
                 0.3578 310.5087 ];
-liuxHistsPR=[  0.6585 183.6762;
+liuxColorPR=[  0.6585 183.6762;
                 0.3012 359.4082;
-                0.3166 346.1323;
-                0.3969 208.4408;
-                0.9876 55.0364;
-                0.4851 238.9864;
-                0.5461 274.5182;
-                0.6388 312.1988;
-                0.2228 387.1628;
-                0.4890 270.5475 ];            
+                0.3166 ;
+                0.3969 173.8379;
+                0.9876 51.3128;
+                0.4851 309.7915;
+                0.5461 134.9138;
+                0.6388 242.4062;
+                0.2228 365.6872;
+                0.4890 310.5087 ];            
 
 
 %% Histogram intersections
@@ -112,39 +112,21 @@ end
     %% Plot average precision 
     figure('Position',[100,100,1000,600])
     subplot(1,2,1); 
-    %Simplicity results
-    plot(1:10,simplicityPR(:,1),'r*');
-    hold on
-    %Liu results
-    plot(1:10,liuxHistsPR(:,1),'bo');
-    plot(1:10,liuxSpectralHistsPR(:,1),'bs');
-    %Our results
-    plot(1:10,imgHistsPR(:,1),'go');
-    plot(1:10,imgSpectralHistsPR(:,1),'gs');
-    hold off
+    plot(1:10,simplicityPR(:,1),'*',1:10,imgHistsPR(:,1),'o',1:10,imgSpectralHistsPR(:,1),'s');
     title('Average Precision')
     xlabel('Category ID');
     ylabel('Precision');
-    legend('SIMPLIcity','Liu Color Histogram','Liu Spectral Histogram','Color Histogram','Spectral Histogram');
+    legend('SIMPLIcity','Color Histogram','Spectral Histogram');
     xlim([0,11]);
     grid on;
 
     %% Plot average rank
     subplot(1,2,2); 
-    %Simplicity results
-    plot(1:10,simplicityPR(:,1),'r*');
-    hold on
-    %Liu results
-    plot(1:10,liuxHistsPR(:,1),'bo');
-    plot(1:10,liuxSpectralHistsPR(:,1),'bs');
-    %Our results
-    plot(1:10,imgHistsPR(:,1),'go');
-    plot(1:10,imgSpectralHistsPR(:,1),'gs');
-    hold off
+    plot(1:10,simplicityPR(:,2),'*',1:10,imgHistsPR(:,2),'o',1:10,imgSpectralHistsPR(:,2),'s');
     title('Average Rank')
     xlabel('Category ID');
     ylabel('Rank');
-    legend('SIMPLIcity','Liu Color Histogram','Liu Spectral Histogram','Color Histogram','Spectral Histogram');
+    legend('SIMPLIcity','Color Histogram','Spectral Histogram');
     xlim([0,11]);
     grid on;
 
