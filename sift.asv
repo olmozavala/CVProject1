@@ -53,8 +53,7 @@ siftScore = zeros(totalImages,totalImages);
 parfor i=1:totalImages
     for j=1:totalImages
         % Utilize Cantor pairing to ensure one to one mapping for 
-        % number of matched descriptors with their average
-        % distance(Euclidean)
+        % number of matched descriptors and eucl
         k1=round(mean(scores{i,j})/maxDist);
         k2=length(scores{i,j});
         siftScore(i,j) = (0.5*(k1+k2)*(k1+k2+1))+k2;
