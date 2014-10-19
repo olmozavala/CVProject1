@@ -14,7 +14,7 @@ if matlabpool('size') == 0
     matlabpool('open',maxWorkers);
 end
 
-bins = [256 100];% Number of bins for each problem
+bins = [256 100];% Number of bins for each problem (1 and 2)
 
 imgHists = zeros(totalImages, bins(1)*3); % Histograms for problem 1
 imgSpectralHists = zeros(totalImages, bins(2)*7*3); % Histograms for problem 2 (using 7 filters)
@@ -23,7 +23,7 @@ display('Reading images and computing the histograms....');
 tic;
 parfor_progress(totalImages);
 parfor currIndx =1:totalImages
-    %% Read images
+    % Read images
     fname=sprintf('corel/%i.jpg',currIndx-1);
     currImgInt = imread(fname,'jpg');
 
@@ -55,18 +55,18 @@ simplicityPR=[  0.47477 178.3529;
                 0.34188 230.2441;
                 0.33971 271.2211 ];
 
-%% Histogram intersections
+%% Histogram distances for each method
 for problem=1:3
     switch problem
-        case 1
+        case 1 % Color histogram
             hists = imgHists;
             display('Calculating histogram distances');
-            dists = computeHistDist(hists,totalImages);
-        case 2
+            dists = computeHistDist(hists,totalImages);            
+        case 2 % Spectral histogram
             hists = imgSpectralHists;
             display('Calculating histogram distances');
             dists = computeHistDist(hists,totalImages);
-        case 3
+        case 3 % Sift features
             dists=sift(totalImages);
     end
     [Y, ind] = sort(-dists);
@@ -96,12 +96,12 @@ end
     figure('Position',[100,100,1500,600])
     subplot(1,2,1); 
     %Simplicity results
-    plot(1:10,simplicityPR(:,1),'r*');
+    plot(1:10,simplicityPR(:,1),'r*','MarkerSize',10);
     hold on
     %Our results
-    plot(1:10,imgHistsPR(:,1),'go');
-    plot(1:10,imgSpectralHistsPR(:,1),'bs');
-    plot(1:10,siftPR(:,1),'md');
+    plot(1:10,imgHistsPR(:,1),'go','MarkerSize',10);
+    plot(1:10,imgSpectralHistsPR(:,1),'bs','MarkerSize',10);
+    plot(1:10,siftPR(:,1),'md','MarkerSize',10);
     hold off
     title('Average Precision')
     xlabel('Category ID');
@@ -114,14 +114,14 @@ end
     %% Plot average rank
     subplot(1,2,2); 
     %Simplicity results
-    plot(1:10,simplicityPR(:,2),'r*');
+    plot(1:10,simplicityPR(:,2),'r*','MarkerSize',10);
     hold on
     %Our results
-    plot(1:10,imgHistsPR(:,2),'go');
-    plot(1:10,imgSpectralHistsPR(:,2),'bs');
-    plot(1:10,siftPR(:,2),'md');
+    plot(1:10,imgHistsPR(:,2),'go','MarkerSize',10);
+    plot(1:10,imgSpectralHistsPR(:,2),'bs','MarkerSize',10);
+    plot(1:10,siftPR(:,2),'md','MarkerSize',10);
     hold off
-    title('Average Rank')
+    title('Average Rank','FontSize',20)
     xlabel('Category ID');
     ylabel('Rank');
     legend('SIMPLIcity','Color Histogram','Spectral Histogram','Sift Features');

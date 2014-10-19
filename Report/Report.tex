@@ -9,6 +9,9 @@
 \usepackage{multicol}
 \usepackage{multirow}
 \usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{pdfpages}
+
 %\setlength\parindent{0pt}
 %\usepackage{figure}
 \usepackage[margin=0.8in]{geometry}
@@ -20,8 +23,8 @@
 
 For this project three approaches for Content Based Image Retrieval  (CBIR)
 where implemented. The first approach is based on the comparison of color 
-histograms, the second solution uses spectral histogram to do the comparison,
-of images and the third approach uses SIFT features to compare images. 
+histograms, the second solution uses spectral histogram to do the comparison
+of images, and the third approach uses SIFT features to compare images. 
 
 \section{Description}
 In this section the three methods used for CBIR are described. 
@@ -80,7 +83,7 @@ for this method are the following:
         For all the filters the range goes from [0 256], even when the values of some
         of the filters may go from [-256 256]. Several options for the range of the 
         histograms were tested, and the range of [0 256] gave the best results. 
-        The 100 bins are evenly splitted from [0 256].
+        The 100 bins are evenly split from [0 256].
         Figure \ref{fig:spechist} shows an example of the spectral histograms. 
         \begin{figure}[h]
             \centering
@@ -96,6 +99,30 @@ for this method are the following:
         of the images was used as the \emph{similarity} parameter. 
 \end{enumerate}
 
+\subsection{SIFT Features}
+For this method we use the SIFT descriptors to compare images. The code is based on  
+the implementation provided at \url{http://www.vlfeat.org/}{vlfeat.org}. The proposed steps
+to obtain a score that could be used for CBIR are:
+
+\begin{enumerate}
+    \item Obtain the SIFT descriptors for each image using function \textbf{vl\_sift}. 
+    \item Compute the matching descriptors and the distance between those descriptors using
+        the function \textbf{vl\_ubcmatch}.
+    \item Obtain the maximum distance obtained between all the matches (for later normalization).
+    \item Combine the average distance of the matched descriptors with the 
+        number of matched descriptors between two images using \emph{Cantor pairing}. Equation \ref{eq:sift}
+        show the score computed between images $i$ and $j$ using the SIFT features.
+        \begin{equation}
+            \begin{split}
+                k1 & = mean( \frac{\text{matches}(i,j)}{\text{maxDist}})\\
+                k2 & = \text{length}(\text{matches}(i,j)) ~ \text{\# matched descriptors}\\
+                \text{siftScore}(i,j) & =  (0.5*(k1+k2)*(k1+k2+1))+k2
+            \end{split}
+            \label{eq:sift}
+        \end{equation}
+\end{enumerate}
+
+
 \subsection{Computation time}
 The three methods were implemented in parallel (when possible) using the
 matlab function $parfor$. The third method, which uses SIFT features,
@@ -105,7 +132,7 @@ at the end of this section. \\
 For eficiency, the first two methods are implemented in the same code, but the program 
 \emph{Problem1And2CompTime} can be easily modified to display the time that
 takes for each method to compute the CBIR. The times shown on table \ref{tab:times}
-are for an specific run in a computer running Ubuntu 14.04, with matlab 2012a, 
+are for an specific run in a Laptop computer running Ubuntu 14.04, with matlab 2012a, 
 with an i7 intel processor and 10 GB of ram. The times varies a little for each run
 but table \ref{tab:times} gives a good estimate of the time that each method takes.
 \begin{table}[h!]
@@ -135,7 +162,12 @@ debug our proposed method, the computation of the SIFT descriptors were run once
 and then saved in a separated file (\emph{/Variables/descriptors.mat}). In the same
 way the matching of the descriptors, which takes almost two hours to finish,
 was also saved in a separated file (\emph{/Variables/scores.mat}). In this way
-we only had two compute the matching and the descriptors one time. 
+we only had two compute the matching and the descriptors one time. The times shown
+on table \ref{tab:sift} are also obtained from a Laptop computer running Ubuntu 14.04, with matlab 2012a, 
+with i7 intel processor and 10 GB of ram. The matching descriptors were
+also computed using a Desktop pc with i5 Processor, 8 GB of ram in windows 7. For this
+configuration the average time to calculate each matching descriptor is under 5 seconds and 
+the overall computation time is close to 1 hr. 
 
 \begin{table}[h!]
     \centering
@@ -164,23 +196,63 @@ we only had two compute the matching and the descriptors one time.
 
 \section{Results}
 
-To better display the results obtained with each method, the
-results are plotted in one figure. 
+To better compare the results between the proposed method the results are plotted together
+in figure \ref{fig:res}. Figure \ref{fig:res} displays the average precision recall (PR) of the
+left plot and the average rank on the right. There are four methods analyzed: SIMPLICITY (red star),
+color histogram (green circle), spectral histogram (blue square), and SIFT features (pink).\\
 
-One good image 401
+The best proposed method is the \textbf{Spectral Histogram}, it improves the results shown in 
+the SIMPLICITY paper in 8 of the 10 categories for the average PR and in 2 
+of the 10 categories for the average image rank. The \textbf{Color histogram} method obtain
+better average PR for some of the categories (1, 8, and 10) but in general is 
+a little bit behind than the Spectral histogram method. The \textbf{SIFT} features 
+method seems to over fit the matching of the images and in general obtains poor results. 
+This method is still the only one that surpasses SIMPLICITY for the 5th category in the average PR
+evaluation. We believe that the problem of the method used compare images based on the
+SIFT features is that it is not taking into account a 'general' similarity between the descriptors. 
+The function that was used (vl\_ubmatch) computes the closest descriptors and their distances, but 
+we don't know if those descriptors were good representation of the original images. A better approach may 
+be to match only the most representative descriptors between the images. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[totalheight=.30\textheight]{./Images/AllResults.png}
+    \label{fig:res}
+\end{figure}
+
+The following are some good and bad examples of the PR obtained for each method in 
+specific images. Figure \ref{fig:good} shows the PR obtained for image $\#401$ for the
+color histogram and spectral histogram methods. In this case both obtain good PR plots, 
+but the Spectral histogram method is better. 
+
 \begin{figure}[h!]
     \centering
     \includegraphics[totalheight=.24\textheight]{../Results/PR/GoodColor.png}
     \includegraphics[totalheight=.24\textheight]{../Results/PR/GoodSpectral.png}
+    \label{fig:good}
 \end{figure}
 
-One bad image 1
+Figure \ref{fig:bad} shows the PR obtained for image $\#361$ for Spectral and color histogram. This
+is an example where the classification is bad. In this example both methods obtain similar
+results. 
 \begin{figure}[h!]
     \centering
     \includegraphics[totalheight=.24\textheight]{../Results/PR/BadColor.png}
     \includegraphics[totalheight=.24\textheight]{../Results/PR/BadSpectral.png}
+    \label{fig:bad}
 \end{figure}
 
+Finally, figure \ref{fig:sgb} shows two PR curves obtained with the SIFT features method.
+The first case is the image $\#481$ which obtains very good results. This image belongs
+to the 5th category, which is mostly the only category where SIFT is better than SIMPLICITY.
+The right plot of figure \ref{fig:sgb} shows the PR plot for image $\#331$ where it obtains very poor results.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[totalheight=.24\textheight]{../Results/PR/GoodSIFT.png}
+    \includegraphics[totalheight=.24\textheight]{../Results/PR/BadSIFT.png}
+    \label{fig:sgb}
+\end{figure}
 
+\includepdf[pages={1-15}]{Code.pdf}
 
 \end{document}
