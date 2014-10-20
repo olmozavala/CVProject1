@@ -1,7 +1,3 @@
-
-%This is the hello world document, it is very usefull
-%As you can see the character % is used for comments
-
 \documentclass[a4paper,12pt]{article}
 %\documentclass[doc]{apa}
 \usepackage[usenames,dvipsnames]{color}
@@ -15,8 +11,8 @@
 %\setlength\parindent{0pt}
 %\usepackage{figure}
 \usepackage[margin=0.8in]{geometry}
-\title{Project 1. Content Based Image Retrieval Using Global and Local Features}
-\author{Dan Bryan and Olmo Zavala}
+\title{Project 1 Content Based Image Retrieval Using Global and Local Features}
+\author{Daniel Bryan and Olmo Zavala\\Florida State University}
 
 \begin{document}
 \maketitle
@@ -35,15 +31,15 @@ In this method we used the color (intensity filter) histogram  to
 compare images. The following steps summarizes the method:
 \begin{enumerate}
     \item \textbf{Image pyramidization. } The images sizes where reduced
-        to half their size in order to speed up the algorithm. The method used
-        to compute the pyramids is \emph{Gaussian pyramid}, the first
+        to half in order to reduce the time of the algorithm. The method used
+        to compute the pyramids is \emph{Gaussian pyramid}. The first
         step of the Gaussian pyramid algorithm is to blur the image 
-        using a Gaussian filter, and then scale down the image by 
+        using a Gaussian filter, and then scale the image down by 
         creating one pixel from the average color of four pixels.
     \item \textbf{Compute histograms.} The number of bins used
         for this method is 256, for each color band.
     \item \textbf{Compute histogram distances.} The distance between
-        each pair of image histograms were computed using histogram intersection:
+        each pair of image histograms was computed using histogram intersection:
         \begin{equation}
             dist(hist_a,hist_b) = \sum_{i=1}^{256} \min( hist_a(i), hist_b(i))
         \end{equation}
@@ -54,16 +50,16 @@ compare images. The following steps summarizes the method:
 \subsection{Spectral histogram}
 \label{sec_spechist}
 This method uses spectral histograms for CBIR. The proposed steps
-for this method are the following:
+for this method are as follows:
 
 \begin{enumerate}
     \item \textbf{Image pyramidization. } The images sizes where reduced
-        to half their size in order to speed up the algorithm. The method used
-        to compute the pyramids is \emph{Gaussian pyramid}, the first
+        to half in order to reduce the time of the algorithm. The method used
+        to compute the pyramids is \emph{Gaussian pyramid}. The first
         step of the Gaussian pyramid algorithm is to blur the image 
-        using a Gaussian filter, and then scale down the image by 
+        using a Gaussian filter, and then scale the image down by 
         creating one pixel from the average color of four pixels.
-    \item \textbf{Filter images}. Six filters plus the intensity
+    \item \textbf{Filter images}. Six filters in addition to the intensity
         filter are applied to each of the images. The filters 
         used and their corresponding masks are:
         \begin{equation}
@@ -80,10 +76,10 @@ for this method are the following:
         used is $5$ with a sigma value of $0.7$.
     \item \textbf{Compute spectral histograms.} The number of bins used
         for this method is 100, for each color band and for each filter. 
-        For all the filters the range goes from [0 256], even when the values of some
+        For all of the filters the range goes from [0 256], even when the values of some
         of the filters may go from [-256 256]. Several options for the range of the 
         histograms were tested, and the range of [0 256] gave the best results. 
-        The 100 bins are evenly split from [0 256].
+        The 100 bins were evenly split from [0 256].
         Figure \ref{fig:spechist} shows an example of the spectral histograms. 
         \begin{figure}[h]
             \centering
@@ -91,7 +87,7 @@ for this method are the following:
             \label{fig:spechist}
         \end{figure}
     \item \textbf{Compute histogram distances.} The distance between
-        each pair of image histograms were computed using histogram intersection:
+        each pair of image histograms was computed using histogram intersection:
         \begin{equation}
             dist(hist_a,hist_b) = \sum_{i=1}^{100} \min( hist_a(i), hist_b(i))
         \end{equation}
@@ -99,10 +95,10 @@ for this method are the following:
         of the images was used as the \emph{similarity} parameter. 
 \end{enumerate}
 
-\subsection{SIFT Features}
-For this method we use the SIFT descriptors to compare images. The code is based on  
-the implementation provided at \url{http://www.vlfeat.org/}{vlfeat.org}. The proposed steps
-to obtain a score that could be used for CBIR are:
+\subsection{Scale-Invariant Feature Transform (SIFT)}
+For this method we used the SIFT descriptors to compare images. The code is based on  
+the implementation provided at \href{http://www.vlfeat.org/}{http://www.vlfeat.org/}. The proposed steps
+to obtain a score that could be used for CBIR are as follows:
 
 \begin{enumerate}
     \item Obtain the SIFT descriptors for each image using function \textbf{vl\_sift}. 
@@ -111,11 +107,11 @@ to obtain a score that could be used for CBIR are:
     \item Obtain the maximum distance obtained between all the matches (for later normalization).
     \item Combine the average distance of the matched descriptors with the 
         number of matched descriptors between two images using \emph{Cantor pairing}. Equation \ref{eq:sift}
-        show the score computed between images $i$ and $j$ using the SIFT features.
+        shows the score computed between images $i$ and $j$ using the SIFT features.
         \begin{equation}
             \begin{split}
                 k1 & = mean( \frac{\text{matches}(i,j)}{\text{maxDist}})\\
-                k2 & = \text{length}(\text{matches}(i,j)) ~ \text{\# matched descriptors}\\
+                k2 & = \text{length}(\text{matches}(i,j))\\
                 \text{siftScore}(i,j) & =  (0.5*(k1+k2)*(k1+k2+1))+k2
             \end{split}
             \label{eq:sift}
@@ -126,30 +122,28 @@ to obtain a score that could be used for CBIR are:
 \subsection{Computation time}
 The three methods were implemented in parallel (when possible) using the
 matlab function $parfor$. The third method, which uses SIFT features,
-takes a lot more time than the others and the computation time is presented separated
-at the end of this section. \\
+takes significantly more time and is presented separately at the end of this section. \\
 
-For eficiency, the first two methods are implemented in the same code, but the program 
+For efficiency, the first two methods are implemented in the same code, but the program 
 \emph{Problem1And2CompTime} can be easily modified to display the time that
-takes for each method to compute the CBIR. The times shown on table \ref{tab:times}
-are for an specific run in a Laptop computer running Ubuntu 14.04, with matlab 2012a, 
+takes for each method to compute the CBIR. The times shown in table \ref{tab:times}
+are for a specific run on a machine running Ubuntu 14.04, with matlab 2012a, 
 with an i7 intel processor and 10 GB of ram. The times varies a little for each run
-but table \ref{tab:times} gives a good estimate of the time that each method takes.
+but table \ref{tab:times} gives a good approximation of the time that each method takes.
 \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|}
         \hline
-        & \textbf{Color histogram (sec)} & \textbf{Spectral Hist (sec)} \\
+        & \textbf{Color Hist (sec)} & \textbf{Spectral Hist (sec)} \\
         \hline
-        \textbf{Read Images} & & \\
-        \textbf{Filter them and} & 9.38 & 30.01 \\
-        \textbf{compute histogram} & & \\
+        \text{Read images, filter } & & \\
+        \text{and compute histogram} & 9.38 & 30.01 \\
         \hline
-        \textbf{Compute distances} & 6.69 & 10.78  \\
+        \text{Calculate distances} & 6.69 & 10.78  \\
         \hline
-        \textbf{Compute Precision Recall } & 1.47 & 1.45 \\
+        \text{Compute Precision Recall } & 1.47 & 1.45 \\
         \hline
-        \textbf{Avg Precision and Rank} & 1.22 & 1.34 \\
+        \text{Avg. Precision and Rank} & 1.22 & 1.34 \\
         \hline
         \textbf{Total time} & \textbf{17.54} & \textbf{43.58}\\
         \hline
@@ -157,36 +151,31 @@ but table \ref{tab:times} gives a good estimate of the time that each method tak
     \label{tab:times}
 \end{table}
 
-The method based on SIFT features take a lot longer to finish. In order to 
-debug our proposed method, the computation of the SIFT descriptors were run once
-and then saved in a separated file (\emph{/Variables/descriptors.mat}). In the same
-way the matching of the descriptors, which takes almost two hours to finish,
-was also saved in a separated file (\emph{/Variables/scores.mat}). In this way
-we only had two compute the matching and the descriptors one time. The times shown
-on table \ref{tab:sift} are also obtained from a Laptop computer running Ubuntu 14.04, with matlab 2012a, 
-with i7 intel processor and 10 GB of ram. The matching descriptors were
-also computed using a Desktop pc with i5 Processor, 8 GB of ram in windows 7. For this
-configuration the average time to calculate each matching descriptor is under 5 seconds and 
-the overall computation time is close to 1 hr. 
-
+The method based on SIFT features takes significantly more time to complete. In order to 
+debug our proposed method, the computation of the SIFT features and descriptors was run once
+and then saved in a separate file (\emph{/Variables/descriptors.mat}). The results of the descriptor matching, which takes almost two hours to finish,
+were also saved in a separate file (\emph{/Variables/scores.mat}). In this way
+we only had two compute the matching and the descriptors once for the image set. The times shown
+in table \ref{tab:sift} are also obtained from a Laptop computer running Ubuntu 14.04, with matlab 2012a, 
+with i7 intel processor and 10 GB of ram. 
 \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|}
         \hline
         & SIFT (time sec) \\
         \hline
-        \textbf{Read all Images} & 12.47 \\
+        \text{Read all Images} & 12.47 \\
         \hline
-        \textbf{Detect SIFT descriptors} & 83.3 \\
+        \text{Detect SIFT descriptors} & 83.3 \\
         \hline
-        \textbf{Matching descriptors} & approx. 7 sec/image\\
+        \text{Matching descriptors} & approx. 7 sec/image\\
         & $\sim$ 7000 sec $\sim$ 1:56 hrs\\
         \hline
-        \textbf{SIFT score} & 18.8 \\
+        \text{SIFT score} & 18.8 \\
         \hline
-        \textbf{Precision recall} & 1.6 \\
+        \text{Precision recall} & 1.6 \\
         \hline
-        \textbf{Average PR} & 1.44 \\
+        \text{Average PR} & 1.44 \\
         \hline
         \textbf{Total} & $\sim$ \textbf{2 hrs}\\
         \hline
@@ -196,34 +185,29 @@ the overall computation time is close to 1 hr.
 
 \section{Results}
 
-To better compare the results between the proposed method the results are plotted together
-in figure \ref{fig:res}. Figure \ref{fig:res} displays the average precision recall (PR) of the
-left plot and the average rank on the right. There are four methods analyzed: SIMPLICITY (red star),
-color histogram (green circle), spectral histogram (blue square), and SIFT features (pink).\\
+To better compare the results between the proposed methods, the results were plotted together. Figure \ref{fig:res} displays the average precision (left) and average rank (right) for each of the ten classes of images. There are four methods analyzed: SIMPLIcity (red star),
+color histogram (green circle), spectral histogram (blue square), and SIFT features (magenta diamond).\\
 
-The best proposed method is the \textbf{Spectral Histogram}, it improves the results shown in 
-the SIMPLICITY paper in 8 of the 10 categories for the average PR and in 2 
-of the 10 categories for the average image rank. The \textbf{Color histogram} method obtain
-better average PR for some of the categories (1, 8, and 10) but in general is 
+The highest performing of the proposed methods is the \textbf{Spectral Histogram}. It improves the results shown in 
+the SIMPLIcity paper in 8 of the 10 categories for the average precision and in 2 
+of the 10 categories for the average rank. The \textbf{Color histogram} method obtained
+higher average precision for some of the categories (1, 8, and 10), but in general is 
 a little bit behind than the Spectral histogram method. The \textbf{SIFT} features 
-method seems to over fit the matching of the images and in general obtains poor results. 
-This method is still the only one that surpasses SIMPLICITY for the 5th category in the average PR
+method seems to over fit the matching of the images and in general obtained poor results. 
+This method is still the only one that surpasses SIMPLIcity for the 3rd category in the average precision
 evaluation. We believe that the problem of the method used compare images based on the
 SIFT features is that it is not taking into account a 'general' similarity between the descriptors. 
-The function that was used (vl\_ubmatch) computes the closest descriptors and their distances, but 
-we don't know if those descriptors were good representation of the original images. A better approach may 
-be to match only the most representative descriptors between the images. 
+The function that was used (vl\_ubmatch) computes the closest descriptors and their distances, but there is no indication that images in the same class consistently share similar features. A better approach may 
+be to match only the most representative features between the images, which may require semantic interpretation. 
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[totalheight=.30\textheight]{./Images/AllResults.png}
+    \includegraphics[totalheight=.26\textheight]{./Images/AllResults.png}
     \label{fig:res}
 \end{figure}
 
-The following are some good and bad examples of the PR obtained for each method in 
-specific images. Figure \ref{fig:good} shows the PR obtained for image $\#401$ for the
-color histogram and spectral histogram methods. In this case both obtain good PR plots, 
-but the Spectral histogram method is better. 
+The following are good and bad examples of Precision/Recall curves (PR) obtained for each methods. Figure \ref{fig:good} shows the PR obtained for image $\#401$ using 
+color histogram and spectral histogram methods. In this case both methods obtained good PR curves. 
 
 \begin{figure}[h!]
     \centering
@@ -232,9 +216,7 @@ but the Spectral histogram method is better.
     \label{fig:good}
 \end{figure}
 
-Figure \ref{fig:bad} shows the PR obtained for image $\#361$ for Spectral and color histogram. This
-is an example where the classification is bad. In this example both methods obtain similar
-results. 
+Figure \ref{fig:bad} shows the PR obtained for image $\#361$ color histogram and spectral histogram methods. In this case both methods obtained poor PR curves.
 \begin{figure}[h!]
     \centering
     \includegraphics[totalheight=.24\textheight]{../Results/PR/BadColor.png}
@@ -242,10 +224,9 @@ results.
     \label{fig:bad}
 \end{figure}
 
-Finally, figure \ref{fig:sgb} shows two PR curves obtained with the SIFT features method.
-The first case is the image $\#481$ which obtains very good results. This image belongs
-to the 5th category, which is mostly the only category where SIFT is better than SIMPLICITY.
-The right plot of figure \ref{fig:sgb} shows the PR plot for image $\#331$ where it obtains very poor results.
+Finally, figure \ref{fig:sgb} shows the PR curves obtained using the SIFT features method.
+The first case is the image $\#481$ which obtains very good results. 
+The right plot of figure \ref{fig:sgb} shows the PR curve for image $\#331$ where it obtains very poor results.
 \begin{figure}[h!]
     \centering
     \includegraphics[totalheight=.24\textheight]{../Results/PR/GoodSIFT.png}
@@ -253,6 +234,6 @@ The right plot of figure \ref{fig:sgb} shows the PR plot for image $\#331$ where
     \label{fig:sgb}
 \end{figure}
 
-\includepdf[pages={1-15}]{Code.pdf}
+\includepdf[pages={1-15}]{FromMatlab/Code.pdf}
 
 \end{document}
