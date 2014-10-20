@@ -126,10 +126,10 @@ takes significantly more time and is presented separately at the end of this sec
 
 For efficiency, the first two methods are implemented in the same code, but the program 
 \emph{Problem1And2CompTime} can be easily modified to display the time that
-takes for each method to compute the CBIR. The times shown in table \ref{tab:times}
+takes for each method to compute the CBIR. The times shown in table 1
 are for a specific run on a machine running Ubuntu 14.04, with matlab 2012a, 
 with an i7 intel processor and 10 GB of ram. The times varies a little for each run
-but table \ref{tab:times} gives a good approximation of the time that each method takes.
+but table \ref{table:times} gives a good approximation of the time that each method takes.
 \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|}
@@ -148,7 +148,9 @@ but table \ref{tab:times} gives a good approximation of the time that each metho
         \textbf{Total time} & \textbf{17.54} & \textbf{43.58}\\
         \hline
     \end{tabular}
-    \label{tab:times}
+    \caption{Computation time for \textbf{Color histogram} and \textbf{Spectral
+    histogram } methods. }
+    \label{table:times}
 \end{table}
 
 The method based on SIFT features takes significantly more time to complete. In order to 
@@ -180,6 +182,7 @@ with i7 intel processor and 10 GB of ram.
         \textbf{Total} & $\sim$ \textbf{2 hrs}\\
         \hline
     \end{tabular}
+    \caption{Computation time for \textbf{SIFT} features method}
     \label{tab:sift}
 \end{table}
 
@@ -202,7 +205,8 @@ be to match only the most representative features between the images, which may 
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[totalheight=.26\textheight]{./Images/AllResults.png}
+    \includegraphics[totalheight=.28\textheight]{./Images/AllResults.png}
+    \caption{Average PR and rank for our three proposed methods.}
     \label{fig:res}
 \end{figure}
 
@@ -213,6 +217,8 @@ color histogram and spectral histogram methods. In this case both methods obtain
     \centering
     \includegraphics[totalheight=.24\textheight]{../Results/PR/GoodColor.png}
     \includegraphics[totalheight=.24\textheight]{../Results/PR/GoodSpectral.png}
+    \caption{Precision recall results using color and spectral histograms 
+    for image 401. Example of good results. }
     \label{fig:good}
 \end{figure}
 
@@ -221,6 +227,8 @@ Figure \ref{fig:bad} shows the PR obtained for image $\#361$ color histogram and
     \centering
     \includegraphics[totalheight=.24\textheight]{../Results/PR/BadColor.png}
     \includegraphics[totalheight=.24\textheight]{../Results/PR/BadSpectral.png}
+    \caption{Precision recall results using color and spectral histograms 
+    for image 361. Example of bad results. }
     \label{fig:bad}
 \end{figure}
 
@@ -231,9 +239,13 @@ The right plot of figure \ref{fig:sgb} shows the PR curve for image $\#331$ wher
     \centering
     \includegraphics[totalheight=.24\textheight]{../Results/PR/GoodSIFT.png}
     \includegraphics[totalheight=.24\textheight]{../Results/PR/BadSIFT.png}
+    \caption{Precision recall plot for one good (image 481) and one bad (image
+    331) case, using the SIFT features methods.}
     \label{fig:sgb}
 \end{figure}
 
+\newpage
+\section{Code}
 \includepdf[pages={1-15}]{FromMatlab/Code.pdf}
 
 \end{document}
